@@ -52,6 +52,14 @@ class RequestServiceForm(forms.Form):
 
 
 class ServiceRequestForm(forms.ModelForm):
+    message = forms.CharField(
+        max_length=50,
+        widget=forms.Textarea(attrs={
+            'rows': 4,
+            'placeholder': 'Describe your requirements...',
+            'class': 'form-control'
+        })
+    )
     service_time = forms.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -77,7 +85,8 @@ class ServiceRequestForm(forms.ModelForm):
             'address': forms.Textarea(attrs={
                 'rows': 3,
                 'placeholder': 'Enter the address where the service is required',
-                'class': 'form-control'
+                'class': 'form-control',
+                'maxlength': '50'
             }),
         }
         labels = {
