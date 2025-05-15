@@ -23,9 +23,11 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% if user.is_company %}
                 <button type="submit" class="btn btn-primary">
                     <a href="{% url 'service-create' %}">Add Service</a>
                 </button>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-9">
