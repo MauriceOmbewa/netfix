@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 
 from users.models import User, Company, Customer
 from services.models import Service, ServiceRequest
@@ -32,3 +33,15 @@ def company_profile(request, name):
         })
     except Company.DoesNotExist:
         return render(request, 'users/error.html', {'message': 'User is not a company'})
+
+
+# def handler404(request, exception):
+#     try:
+#         context = {
+#             'error_message': str(exception) if exception else 'Page not found',
+#             'request_path': request.path
+#         }
+#         return render(request, '404.html', context, status=404)
+#     except Exception as e:
+#         # Fallback in case of any errors
+#         return render(request, '404.html', {'request_path': request.path}, status=404)
