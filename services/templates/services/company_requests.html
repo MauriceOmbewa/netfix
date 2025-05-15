@@ -1,6 +1,14 @@
 {% extends "services/base.html" %}
 
 {% block service_content %}
+<style>
+    .address-cell {
+        max-width: 200px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
@@ -51,7 +59,7 @@
                                         <tr>
                                             <td>{{ request.service.name }}</td>
                                             <td>{{ request.user.username }}</td>
-                                            <td>{{ request.address }}</td>
+                                            <td class="address-cell">{{ request.address }}</td>
                                             <td>{{ request.service_time }} hours</td>
                                             <td>${{ request.total_cost }}</td>
                                             <td>
