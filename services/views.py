@@ -321,7 +321,21 @@ class ServiceCreateView(LoginRequiredMixin,CreateView):
     template_name = 'services/service_form.html'
     success_url = reverse_lazy('service_list')
 
-    # where to send users who aren’t logged in:
+    # where to send users who aren't logged in:
     login_url = reverse_lazy('login_user')
-    # query-string param that holds “where to go next” (defaults to "next")
+    # query-string param that holds "where to go next" (defaults to "next")
     redirect_field_name = 'next'
+
+@login_required
+def rate_service(request, pk):
+    service = get_object_or_404(Service, id=pk)
+    
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        if rating:
+            service.rating = int(rating)
+            service.save()
+            messages.success(request, 'Thank you for rating this service!')
+            return redirect('service_detail', pk=service.id)
+    
+    return render(request, 'services/rate_service.html', {'service': service})
