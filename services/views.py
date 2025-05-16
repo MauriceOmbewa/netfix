@@ -328,6 +328,11 @@ class ServiceCreateView(LoginRequiredMixin,CreateView):
 
 @login_required
 def rate_service(request, pk):
+    # Check if user is a customer
+    if not hasattr(request.user, 'customer'):
+        messages.error(request, "Only customers can rate services.")
+        return redirect('service_detail', pk=pk)
+        
     service = get_object_or_404(Service, id=pk)
     
     if request.method == 'POST':
