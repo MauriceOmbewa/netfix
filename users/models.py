@@ -42,3 +42,11 @@ class Company(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def average_rating(self):
+        services = self.services.all()
+        if not services:
+            return 0
+        total_rating = sum(service.rating for service in services)
+        return total_rating / len(services)
