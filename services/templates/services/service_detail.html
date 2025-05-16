@@ -28,7 +28,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            {% if user.is_authenticated %}
+                            {% if user.is_authenticated and is_customer %}
                                 <a href="{% url 'rate_service' service.id %}" class="rate-link">Rate this service</a>
                             {% endif %}
                         </div>
