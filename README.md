@@ -27,7 +27,7 @@ NetFix aims to simplify the process of finding reliable home service providers b
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/MauriceOmbewa/netfix.git
+git clone https://learn.zone01kisumu.ke/git/weakinyi/netfix.git
 cd netfix
 ```
 
