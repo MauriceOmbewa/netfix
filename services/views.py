@@ -108,8 +108,32 @@ def service_field(request, field):
     })
 
 
+@login_required
 def request_service(request, id):
-    return render(request, 'services/request_service.html', {})
+    service = get_object_or_404(Service, id=id)
+    
+    # Check if user is a customer
+    if not hasattr(request.user, 'customer'):
+        messages.error(request, "Only customers can request services.")
+        return redirect('service_detail', pk=id)
+    
+    if request.method == 'POST':
+        form = ServiceRequestForm(request.POST)
+        if form.is_valid():
+            service_request = form.save(commit=False)
+            service_request.service = service
+            service_request.user = request.user
+            service_request.total_cost = service.price_hour * service_request.service_time
+            service_request.save()
+            messages.success(request, 'Service request submitted successfully!')
+            return redirect('my_requests')
+    else:
+        form = ServiceRequestForm()
+    
+    return render(request, 'services/request_service.html', {
+        'form': form,
+        'service': service
+    })
 
 
 @login_required
@@ -321,7 +345,26 @@ class ServiceCreateView(LoginRequiredMixin,CreateView):
     template_name = 'services/service_form.html'
     success_url = reverse_lazy('service_list')
 
-    # where to send users who aren’t logged in:
+    # where to send users who aren't logged in:
     login_url = reverse_lazy('login_user')
-    # query-string param that holds “where to go next” (defaults to "next")
+    # query-string param that holds "where to go next" (defaults to "next")
     redirect_field_name = 'next'
+
+@login_required
+def rate_service(request, pk):
+    # Check if user is a customer
+    if not hasattr(request.user, 'customer'):
+        messages.error(request, "Only customers can rate services.")
+        return redirect('service_detail', pk=pk)
+        
+    service = get_object_or_404(Service, id=pk)
+    
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        if rating:
+            service.rating = int(rating)
+            service.save()
+            messages.success(request, 'Thank you for rating this service!')
+            return redirect('service_detail', pk=service.id)
+    
+    return render(request, 'services/rate_service.html', {'service': service})
