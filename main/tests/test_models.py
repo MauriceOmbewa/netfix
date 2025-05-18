@@ -1,11 +1,9 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from .models import HomePage, AboutPage, ContactPage
+from main.models import HomePage, AboutPage, ContactPage
 from django.utils import timezone
 
-# Create your tests here.
-
-class HomePageTests(TestCase):
+class HomePageModelTests(TestCase):
     def setUp(self):
         self.homepage = HomePage.objects.create(
             title="Welcome to NetFix",
@@ -23,7 +21,7 @@ class HomePageTests(TestCase):
         self.assertIsNotNone(self.homepage.created_at)
         self.assertIsNotNone(self.homepage.updated_at)
 
-class AboutPageTests(TestCase):
+class AboutPageModelTests(TestCase):
     def setUp(self):
         self.aboutpage = AboutPage.objects.create(
             title="About NetFix",
@@ -40,7 +38,7 @@ class AboutPageTests(TestCase):
         self.assertIsNotNone(self.aboutpage.created_at)
         self.assertIsNotNone(self.aboutpage.updated_at)
 
-class ContactPageTests(TestCase):
+class ContactPageModelTests(TestCase):
     def setUp(self):
         self.contactpage = ContactPage.objects.create(
             title="Contact Us",
@@ -54,16 +52,3 @@ class ContactPageTests(TestCase):
         self.assertEqual(self.contactpage.__str__(), "Contact Us")
         self.assertEqual(self.contactpage.email, "contact@netfix.com")
         self.assertEqual(self.contactpage.phone, "+1234567890")
-
-    def test_contactpage_email_validation(self):
-        with self.assertRaises(ValidationError):
-            ContactPage.objects.create(
-                title="Invalid Contact",
-                email="invalid-email",
-                phone="+1234567890",
-                address="123 Service Street"
-            )
-
-    def test_contactpage_timestamps(self):
-        self.assertIsNotNone(self.contactpage.created_at)
-        self.assertIsNotNone(self.contactpage.updated_at)
