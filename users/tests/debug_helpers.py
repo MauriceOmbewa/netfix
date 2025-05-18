@@ -6,6 +6,7 @@ def debug_form(form):
             print(f"  {field}: {', '.join(errors)}")
     return form.is_valid()
 
+
 def debug_response(response):
     """Helper function to print response details during tests"""
     print(f"\nResponse status: {response.status_code}")
